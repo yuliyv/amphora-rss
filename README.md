@@ -1,5 +1,7 @@
 # Amphora RSS
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/clay/amphora-rss.svg)](https://greenkeeper.io/)
+
 ## Notice
 This is a pre-1.x version of the renderer and the API is subject to change. It's recommended to install a specific version of the package until a stable API is reached.
 
