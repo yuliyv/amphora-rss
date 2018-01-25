@@ -1,5 +1,8 @@
 # Amphora RSS
 
+[![CircleCI](https://circleci.com/gh/clay/amphora-rss/tree/master.svg?style=svg)](https://circleci.com/gh/clay/amphora-rss/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/clay/amphora-rss/badge.svg?branch=master)](https://coveralls.io/github/clay/amphora-rss?branch=master)
+
 ## Notice
 This is a pre-1.x version of the renderer and the API is subject to change. It's recommended to install a specific version of the package until a stable API is reached.
 
