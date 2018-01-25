@@ -132,6 +132,4 @@ module.exports.returnXML = returnXML;
 module.exports.wrapInTopLevel = wrapInTopLevel;
 module.exports.feedMetaTags = feedMetaTags;
 module.exports.elevateCategory = elevateCategory;
-module.exports.setLog = function (fake) {
-  log = fake;
-};
+module.exports.setLog = (fake) => log = fake;
