@@ -35,20 +35,22 @@ function elevateCategory(group) {
  */
 function feedMetaTags({ title, description, link, copyright, generator, docs }) {
   return function (group) {
+    var now, siteMeta;
+
     if (!title || !description || !link) {
       throw new Error('A `title`, `description` and `link` property are all required in the `meta` object for the RSS renderer');
     }
 
-    var now = new Date(),
-      siteMeta = [
-        { title },
-        { description },
-        { link },
-        { lastBuildDate: now.toString() },
-        { docs: docs || 'http://blogs.law.harvard.edu/tech/rss' },
-        { copyright: copyright || now.getFullYear() },
-        { generator: generator || 'Feed delivered by Clay' }
-      ];
+    now = new Date();
+    siteMeta = [
+      { title },
+      { description },
+      { link },
+      { lastBuildDate: now.toString() },
+      { docs: docs || 'http://blogs.law.harvard.edu/tech/rss' },
+      { copyright: copyright || now.getFullYear() },
+      { generator: generator || 'Feed delivered by Clay' }
+    ];
 
     return siteMeta.concat(elevateCategory(group), group);
   };

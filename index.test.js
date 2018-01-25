@@ -50,7 +50,7 @@ describe(_.startCase(filename), function () {
       });
 
       result.catch(function (err) {
-        sinon.assert.match(err.message, /No data send to XML renderer, cannot respond/)
+        sinon.assert.match(err.message, /No data send to XML renderer, cannot respond/);
       });
     });
   });
