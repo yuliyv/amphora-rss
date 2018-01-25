@@ -15,8 +15,3 @@ require('../index.test.js');
 _.each(tests, function (test) {
   require(test);
 });
-
-// process.on('unhandledRejection', (reason, p) => {
-//   console.log('Unhandled Rejection at:', p, 'reason:', reason);
-//   // application specific logging, throwing an error, or other logic here
-// });
