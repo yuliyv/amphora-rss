@@ -87,21 +87,6 @@ describe(_.startCase(filename), function () {
   describe('feedMetaTags', function () {
     const fn = lib[this.title];
 
-    // it('logs error if `title` property is not passed in', function () {
-    //   fn({});
-    //   sinon.assert.calledWith(logSpy, 'error');
-    // });
-    //
-    // it('logs error if `description` property is not passed in', function () {
-    //   fn({ title: 'foo' });
-    //   sinon.assert.calledWith(logSpy, 'error');
-    // });
-    //
-    // it('logs error if `link` property is not passed in', function () {
-    //   fn({ title: 'foo', description: 'bar' });
-    //   sinon.assert.calledWith(logSpy, 'error');
-    // });
-
     it('returns a function', function () {
       const result = fn({title:'foo', description: 'bar', link: 'foobar'});
 
