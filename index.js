@@ -15,16 +15,11 @@ function elevateCategory(group) {
   return group
     .map(function ({ item }) {
       return item
-        .map(function (entry) {
-          return entry && entry.category;
-        })
-        .filter(function (entry) {
-          return !!entry;
-        }).join(',');
+        .map(entry => entry && entry.category)
+        .filter(entry => !!entry)
+        .join(',');
     })
-    .map(function (string) {
-      return { category: string };
-    });
+    .map(string => ({ category: string }));
 }
 
 /**
@@ -122,7 +117,7 @@ function render({ _data: { feed, meta } }) {
     .collect()
     .map(feedMetaTags(meta))
     .map(wrapInTopLevel)
-    .errors(function (error) {
+    .errors(error => {
       log('error', error.message);
     })
     .toPromise(Promise)
