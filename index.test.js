@@ -24,20 +24,24 @@ describe(_.startCase(filename), function () {
     const fn = lib[this.title];
 
     it('returns an object with `output` and `type` properties', function () {
-      const result = fn({
-        _data: {
-          feed: [],
-          meta: {
-            title: 'foo',
-            description: 'bar',
-            link: 'foobar'
+      const fakeRes = {
+          type: sandbox.spy(),
+          send: sandbox.spy()
+        },
+        result = fn({
+          _data: {
+            feed: [],
+            meta: {
+              title: 'foo',
+              description: 'bar',
+              link: 'foobar'
+            }
           }
-        }
-      });
+        }, fakeRes);
 
-      result.then(function (res) {
-        expect(res.output).to.not.be.undefined;
-        expect(res.type).to.not.be.undefined;
+      return result.then(function () {
+        sinon.assert.calledWith(fakeRes.type, 'text/rss+xml');
+        sinon.assert.calledOnce(fakeRes.send);
       });
     });
 

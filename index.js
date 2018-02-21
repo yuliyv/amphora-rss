@@ -89,31 +89,13 @@ function wrapInItem(entry) {
 }
 
 /**
- * Send the XML back to Amphora
- *
- * @param  {Object} data
- * @return {Object}
- */
-function returnXML(data) {
-  if (!data) {
-    throw new Error('No data send to XML renderer, cannot respond');
-  }
-
-  return {
-    output: xml(data, { declaration: true, indent: '\t' }),
-    type: 'text/rss+xml'
-  };
-}
-
-/**
  * Given the data object from Amphora, make the XML
  *
  * @param  {Object} _data
- * @param  {Array} Feed
- * @param  {Object} meta
+ * @param  {Object} res
  * @return {Promise}
  */
-function render({ _data: { feed, meta } }) {
+function render({ _data: { feed, meta } }, res) {
   return h(feed)
     .map(wrapInItem)
     .collect()
@@ -123,14 +105,20 @@ function render({ _data: { feed, meta } }) {
       log('error', error.message);
     })
     .toPromise(Promise)
-    .then(returnXML);
+    .then(data => {
+      if (!data) {
+        throw new Error('No data send to XML renderer, cannot respond');
+      }
+
+      res.type('text/rss+xml');
+      res.send(xml(data, { declaration: true, indent: '\t' }));
+    });
 };
 
 module.exports.render = render;
 
 // Exported for testing
 module.exports.wrapInItem = wrapInItem;
-module.exports.returnXML = returnXML;
 module.exports.wrapInTopLevel = wrapInTopLevel;
 module.exports.feedMetaTags = feedMetaTags;
 module.exports.elevateCategory = elevateCategory;
