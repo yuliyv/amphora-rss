@@ -29,15 +29,13 @@ describe(_.startCase(filename), function () {
           send: sandbox.spy()
         },
         result = fn({
-          _data: {
-            feed: [],
-            meta: {
-              title: 'foo',
-              description: 'bar',
-              link: 'foobar'
-            }
+          feed: [],
+          meta: {
+            title: 'foo',
+            description: 'bar',
+            link: 'foobar'
           }
-        }, fakeRes);
+        }, {}, fakeRes);
 
       return result.then(function () {
         sinon.assert.calledWith(fakeRes.type, 'text/rss+xml');
@@ -47,10 +45,8 @@ describe(_.startCase(filename), function () {
 
     it('works', function () {
       const result = fn({
-        _data: {
-          feed: [],
-          meta: {}
-        }
+        feed: [],
+        meta: {}
       });
 
       result.catch(function (err) {
