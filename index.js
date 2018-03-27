@@ -91,11 +91,12 @@ function wrapInItem(entry) {
 /**
  * Given the data object from Amphora, make the XML
  *
- * @param  {Object} _data
+ * @param  {Object} data
+ * @param  {Object} info
  * @param  {Object} res
  * @return {Promise}
  */
-function render({ _data: { feed, meta } }, res) {
+function render({ feed, meta }, info, res) {
   return h(feed)
     .map(wrapInItem)
     .collect()
