@@ -20,6 +20,15 @@ describe(_.startCase(filename), function () {
     sandbox.restore();
   });
 
+  function makeFakeRes() {
+    return {
+      type: sandbox.spy(),
+      send: sandbox.spy(),
+      status: sandbox.spy(),
+      json: sandbox.spy()
+    };
+  }
+
   describe('render', function () {
     const fn = lib[this.title];
 
@@ -44,13 +53,15 @@ describe(_.startCase(filename), function () {
     });
 
     it('works', function () {
-      const result = fn({
-        feed: [],
-        meta: {}
-      });
+      const res = makeFakeRes(),
+        result = fn({
+          feed: [],
+          meta: {}
+        }, {}, res);
 
-      result.catch(function (err) {
-        sinon.assert.match(err.message, /No data send to XML renderer, cannot respond/);
+
+      result.then(function () {
+        sinon.assert.calledWith(res.json, {status: 500, message: 'No data send to XML renderer, cannot respond'});
       });
     });
   });

@@ -88,6 +88,17 @@ function wrapInItem(entry) {
   return { item: entry };
 }
 
+function sendError(res, e, message) {
+  var message = message || e.message;
+
+  res.status(500);
+  res.json({ status: 500, message });
+
+  log('error', e.message, {
+    stack: e.stack
+  });
+}
+
 /**
  * Given the data object from Amphora, make the XML
  *
@@ -102,9 +113,7 @@ function render({ feed, meta }, info, res) {
     .collect()
     .map(feedMetaTags(meta))
     .map(wrapInTopLevel)
-    .errors(error => {
-      log('error', error.message);
-    })
+    .errors(e => sendError(res, e))
     .toPromise(Promise)
     .then(data => {
       if (!data) {
@@ -113,7 +122,8 @@ function render({ feed, meta }, info, res) {
 
       res.type('text/rss+xml');
       res.send(xml(data, { declaration: true, indent: '\t' }));
-    });
+    })
+    .catch(e => sendError(res, e));
 };
 
 module.exports.render = render;
