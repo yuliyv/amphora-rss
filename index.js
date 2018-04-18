@@ -1,8 +1,10 @@
 'use strict';
 
 const h = require('highland'),
-  xml = require('xml');
-var log = require('./services/log').setup({ file: __filename });
+  xml = require('xml'),
+  format = require('date-fns/format');
+
+let log = require('./services/log').setup({ file: __filename });
 
 /**
  * Elevate category tags into the
@@ -13,7 +15,7 @@ var log = require('./services/log').setup({ file: __filename });
  */
 function elevateCategory(group) {
   return group
-    .map(function ({ item }) {
+    .map(({ item }) => {
       return item
         .map(entry => entry && entry.category)
         .filter(entry => !!entry)
@@ -34,8 +36,8 @@ function elevateCategory(group) {
  * @return {Array}
  */
 function feedMetaTags({ title, description, link, copyright, generator, docs }) {
-  return function (group) {
-    var now, siteMeta;
+  return (group) => {
+    let now, siteMeta;
 
     if (!title || !description || !link) {
       throw new Error('A `title`, `description` and `link` property are all required in the `meta` object for the RSS renderer');
@@ -46,7 +48,7 @@ function feedMetaTags({ title, description, link, copyright, generator, docs }) 
       { title },
       { description },
       { link },
-      { lastBuildDate: now.toString() },
+      { lastBuildDate: format(now, 'ddd, DD MMM YYYY HH:mm:ss ZZ') }, // Date format must be RFC 822 compliant
       { docs: docs || 'http://blogs.law.harvard.edu/tech/rss' },
       { copyright: copyright || now.getFullYear() },
       { generator: generator || 'Feed delivered by Clay' }
@@ -88,11 +90,11 @@ function wrapInItem(entry) {
   return { item: entry };
 }
 
-function sendError(res, e, message) {
-  var message = message || e.message;
+function sendError(res, e, message = e.message) {
+  const status = 500;
 
-  res.status(500);
-  res.json({ status: 500, message });
+  res.status(status);
+  res.json({ status, message });
 
   log('error', e.message, {
     stack: e.stack
@@ -124,7 +126,7 @@ function render({ feed, meta }, info, res) {
       res.send(xml(data, { declaration: true, indent: '\t' }));
     })
     .catch(e => sendError(res, e));
-};
+}
 
 module.exports.render = render;
 
