@@ -90,11 +90,11 @@ function wrapInItem(entry) {
   return { item: entry };
 }
 
-function sendError(res, e, message) {
-  var message = message || e.message;
+function sendError(res, e, message = e.message) {
+  const status = 500;
 
-  res.status(500);
-  res.json({ status: 500, message });
+  res.status(status);
+  res.json({ status, message });
 
   log('error', e.message, {
     stack: e.stack
