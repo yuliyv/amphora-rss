@@ -17,6 +17,7 @@
   "dependencies": {
     "clay-log": "^1.2.1",
     "clayutils": "^1.0.0",
+    "date-fns": "^1.29.0",
     "highland": "^2.11.1",
     "nymag-fs": "^1.0.1",
     "xml": "^1.0.1",
