@@ -21,7 +21,8 @@ function elevateCategory(group) {
         .filter(entry => !!entry)
         .join(',');
     })
-    .map(string => ({ category: string }));
+    .filter(category => !!category)
+    .map(string => string ? { category: string } : {});
 }
 
 /**
