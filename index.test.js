@@ -76,7 +76,9 @@ describe(_.startCase(filename), function () {
 
   describe('wrapInTopLevel', function () {
     const fn = lib[this.title],
-      val = fn('foo');
+      val = fn('foo'),
+      customAttr = {bar: 'http://bar.com'},
+      valWithAttr = fn('foo', customAttr);
 
     it('wraps the passed in value in an object with and rss array', function () {
       expect(Array.isArray(val.rss)).to.be.true;
@@ -84,6 +86,10 @@ describe(_.startCase(filename), function () {
 
     it('has an object with an `_attr` property as the first object of the `rss` Array', function () {
       expect(val.rss[0]._attr).to.not.be.undefined;
+    });
+
+    it('merges attr instance data into the default _attr properties', function () {
+      expect(valWithAttr.rss[0]._attr).to.have.property('bar', 'http://bar.com');
     });
 
     it('has an object with a `channel` property as the second object of the `rss` Array', function () {
@@ -126,6 +132,12 @@ describe(_.startCase(filename), function () {
       var result = fn([{item: [{ category: 'foo'}, { category: 'bar'}]}]);
 
       expect(result).to.eql([ { category: 'foo,bar' } ]);
+    });
+
+    it('returns returns an empty array of each item has no categories', function () {
+      var result = fn([{item: [{ notCategory: 'foo'}, { notCategory: 'bar'}]}]);
+
+      expect(result).to.eql([]);
     });
   });
 });

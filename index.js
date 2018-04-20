@@ -3,6 +3,7 @@
 const h = require('highland'),
   xml = require('xml'),
   format = require('date-fns/format');
+  // _ = require('lodash');
 
 let log = require('./services/log').setup({ file: __filename });
 
@@ -67,7 +68,7 @@ function feedMetaTags({ title, description, link, copyright, generator, docs }) 
  * @return {Object}
  */
 function wrapInTopLevel(data, attr) {
-  const defaultAttr = {
+  let defaultAttr = {
     version: '2.0',
     'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
     'xmlns:media': 'http://search.yahoo.com/mrss/',
@@ -77,7 +78,7 @@ function wrapInTopLevel(data, attr) {
 
   return {
     rss: [{
-      _attr: attr || defaultAttr
+      _attr: Object.assign(defaultAttr, attr)
     }, {
       channel: data
     }]
