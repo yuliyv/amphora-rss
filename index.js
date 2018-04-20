@@ -62,18 +62,21 @@ function feedMetaTags({ title, description, link, copyright, generator, docs }) 
  * Wraps content in top level RSS and Channel tags
  *
  * @param  {Array} data
+ * @param  {Object} attr
  * @return {Object}
  */
-function wrapInTopLevel(data) {
+function wrapInTopLevel(data, attr) {
+  const defaultAttr = {
+    version: '2.0',
+    'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
+    'xmlns:media': 'http://search.yahoo.com/mrss/',
+    'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+    'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/'
+  };
+
   return {
     rss: [{
-      _attr: {
-        version: '2.0',
-        'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
-        'xmlns:media': 'http://search.yahoo.com/mrss/',
-        'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-        'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/'
-      }
+      _attr: attr || defaultAttr
     }, {
       channel: data
     }]
@@ -109,12 +112,12 @@ function sendError(res, e, message = e.message) {
  * @param  {Object} res
  * @return {Promise}
  */
-function render({ feed, meta }, info, res) {
+function render({ feed, meta, attr }, info, res) {
   return h(feed)
     .map(wrapInItem)
     .collect()
     .map(feedMetaTags(meta))
-    .map(wrapInTopLevel)
+    .map(data => wrapInTopLevel(data, attr))
     .errors(e => sendError(res, e))
     .toPromise(Promise)
     .then(data => {
