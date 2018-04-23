@@ -17,12 +17,12 @@ function elevateCategory(group) {
   return group
     .map(({ item }) => {
       return item
+        .filter(entry => entry && entry.category)
         .map(entry => entry && entry.category)
-        .filter(entry => !!entry)
         .join(',');
     })
-    .filter(category => !!category)
-    .map(string => string ? { category: string } : {});
+    .filter(Boolean)
+    .map(string => ({ category: string }));
 }
 
 /**
@@ -67,7 +67,7 @@ function feedMetaTags({ title, description, link, copyright, generator, docs }) 
  * @return {Object}
  */
 function wrapInTopLevel(data, attr) {
-  let defaultAttr = {
+  const defaultAttr = {
     version: '2.0',
     'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
     'xmlns:media': 'http://search.yahoo.com/mrss/',
