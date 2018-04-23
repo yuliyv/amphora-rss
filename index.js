@@ -3,7 +3,6 @@
 const h = require('highland'),
   xml = require('xml'),
   format = require('date-fns/format');
-  // _ = require('lodash');
 
 let log = require('./services/log').setup({ file: __filename });
 
