@@ -134,7 +134,7 @@ describe(_.startCase(filename), function () {
       expect(result).to.eql([ { category: 'foo,bar' } ]);
     });
 
-    it('returns returns an empty array of each item has no categories', function () {
+    it('returns an empty array if none of the items have categories', function () {
       var result = fn([{item: [{ notCategory: 'foo'}, { notCategory: 'bar'}]}]);
 
       expect(result).to.eql([]);
