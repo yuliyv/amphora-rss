@@ -34,9 +34,10 @@ function elevateCategory(group) {
  * @param  {String|Number} [copyright]
  * @param  {String} [generator]
  * @param  {String} [docs]
+ * @param  {String} [opt]
  * @return {Array}
  */
-function feedMetaTags({ title, description, link, copyright, generator, docs }) {
+function feedMetaTags({ title, description, link, copyright, generator, docs, opt }) {
   return (group) => {
     let now, siteMeta;
 
@@ -54,6 +55,10 @@ function feedMetaTags({ title, description, link, copyright, generator, docs }) 
       { copyright: copyright || now.getFullYear() },
       { generator: generator || 'Feed delivered by Clay' }
     ];
+
+    if (opt) {
+      siteMeta = siteMeta.concat(opt);
+    }
 
     return siteMeta.concat(elevateCategory(group), group);
   };

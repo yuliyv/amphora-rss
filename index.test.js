@@ -123,6 +123,13 @@ describe(_.startCase(filename), function () {
       expect(two.description).to.eql('bar');
       expect(three.link).to.eql('foobar');
     });
+
+    it('accepts an `opt` object with additional meta tags', function () {
+      const language = {language: 'en-US'},
+        result = fn({title:'foo', description: 'bar', link: 'foobar', opt: language})([]);
+
+      expect(result).have.to.deep.include(language);
+    });
   });
 
   describe('elevateCategory', function () {
