@@ -65,24 +65,40 @@ function feedMetaTags({ title, description, link, copyright, generator, docs, op
 }
 
 /**
+ * Remove falsy values from an object
+ *
+ * @param {Object} obj
+ * @returns {Object}
+ */
+function cleanNullValues(obj) {
+  for (let propName in obj) {
+    if (!obj[propName]) {
+      delete obj[propName];
+    }
+  }
+
+  return obj;
+}
+
+/**
  * Wraps content in top level RSS and Channel tags
  *
  * @param  {Array} data
  * @param  {Object} attr
  * @return {Object}
  */
-function wrapInTopLevel(data, attr) {
-  const defaultAttr = {
+function wrapInTopLevel(data, attr = {}) {
+  const defaultNamespaces = {
     version: '2.0',
     'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
-    'xmlns:media': 'http://search.yahoo.com/mrss/',
+    'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-    'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/'
+    'xmlns:media': 'http://search.yahoo.com/mrss/'
   };
 
   return {
     rss: [{
-      _attr: Object.assign(defaultAttr, attr)
+      _attr: cleanNullValues(Object.assign(defaultNamespaces, attr))
     }, {
       channel: data
     }]
@@ -144,4 +160,5 @@ module.exports.wrapInItem = wrapInItem;
 module.exports.wrapInTopLevel = wrapInTopLevel;
 module.exports.feedMetaTags = feedMetaTags;
 module.exports.elevateCategory = elevateCategory;
+module.exports.cleanNullValues = cleanNullValues;
 module.exports.setLog = (fake) => log = fake;

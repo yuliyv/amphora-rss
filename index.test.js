@@ -74,6 +74,15 @@ describe(_.startCase(filename), function () {
     });
   });
 
+  describe('cleanNullValues', function () {
+    const fn = lib[this.title];
+
+    it('filters out falsy values from an object', function () {
+      expect(fn({ foo: 'bar', baz: false, barbaz: null, bazfoo: undefined, foobaz: ''}))
+        .to.eql({ foo: 'bar' });
+    });
+  });
+
   describe('wrapInTopLevel', function () {
     const fn = lib[this.title],
       val = fn('foo'),
