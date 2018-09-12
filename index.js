@@ -84,21 +84,24 @@ function cleanNullValues(obj) {
  * Wraps content in top level RSS and Channel tags
  *
  * @param  {Array} data
- * @param  {Object} attr
+ * @param  {Object} namespaces
  * @return {Object}
  */
-function wrapInTopLevel(data, attr = {}) {
-  const defaultNamespaces = {
-    version: '2.0',
-    'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
-    'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/',
-    'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-    'xmlns:media': 'http://search.yahoo.com/mrss/'
-  };
+function wrapInTopLevel(data, namespaces = {}) {
+  const baseTopLevelAttributes = {
+      version: '2.0'
+    },
+    defaultNamespaces = {
+      'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
+      'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/',
+      'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+      'xmlns:media': 'http://search.yahoo.com/mrss/'
+    },
+    combinedNamespaces = cleanNullValues(Object.assign(defaultNamespaces, namespaces));
 
   return {
     rss: [{
-      _attr: cleanNullValues(Object.assign(defaultNamespaces, attr))
+      _attr: Object.assign(baseTopLevelAttributes, combinedNamespaces)
     }, {
       channel: data
     }]
@@ -134,12 +137,12 @@ function sendError(res, e, message = e.message) {
  * @param  {Object} res
  * @return {Promise}
  */
-function render({ feed, meta, attr }, info, res) {
+function render({ feed, meta, namespaces }, info, res) {
   return h(feed)
     .map(wrapInItem)
     .collect()
     .map(feedMetaTags(meta))
-    .map(data => wrapInTopLevel(data, attr))
+    .map(data => wrapInTopLevel(data, namespaces))
     .errors(e => sendError(res, e))
     .toPromise(Promise)
     .then(data => {
