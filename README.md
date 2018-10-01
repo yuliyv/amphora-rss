@@ -26,21 +26,21 @@ This renderer is highly dependent on the component API provided by Amphora and t
 ## Data Specification
 
 ## Updating Namespaces
- This renderer has default namespaces which gets injected at the top of the rss feed. These namespaces are contained inside of the `defaultNamespaces` object. The namespaces can be overridden, removed or extended by attaching namespaces to the `attr` object. Since we merge this `attr` with `defaultNamespaces` and remove null values, attr keys with null values will not be included in the feed. attr keys with different namespaces will be added as an additional namespace to the feed. If a key holds the same namespace which exists within `defaultNamespaces` (and the value is not null) we will use the value of the attr namespace.
- - To remove a default namespace, set the value of that namespace to `null` inside the `attr` object. To modify a namespace, change the value of that similar namespace inside the `attr` object. To add a new namespace, add a key:value pair to the `attr` object where the key is a namespace that isn't used within `defaultNamespaces`, and the value is the url.
-  - ```
-  defaultNamespaces: {
-      version: '2.0',
-      'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
-      'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/',
-      'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
-      }
-
-  attr: {
-      "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd", <!-- this will be an additional namespace in our feed -->
-      "xmlns:mi": null, <!-- this will be removed from our feed -->
-      "xmlns:dc": "http://purl.org/dc/elements/2.1/", <!-- this will override and be the updated namespace -->
-      }
+This renderer has default namespaces which gets injected at the top of the rss feed. These namespaces are contained inside of the `defaultNamespaces` object. The namespaces can be overridden, removed or extended by attaching namespaces to the `namespaces` object. Since we merge this `namespaces` with `defaultNamespaces` and remove null values, namespaces keys with null values will not be included in the feed. namespaces keys with different namespaces will be added as an additional namespace to the feed. If a key holds the same namespace which exists within `defaultNamespaces` (and the value is not null) we will use the value of the attr namespace.
+- To remove a default namespace, set the value of that namespace to `null` inside the `namespaces` object. To modify a namespace, change the value of that similar namespace inside the `namespaces` object. To add a new namespace, add a key:value pair to the `namespaces` object where the key is a namespace that isn't used within `defaultNamespaces`, and the value is the url.
+  ```js
+  "defaultNamespaces": {
+    "xmlns:content": "http://purl.org/rss/1.0/modules/content/",
+    "xmlns:mi": "http://schemas.ingestion.microsoft.com/common/",
+    "xmlns:dc": "http://purl.org/dc/elements/1.1/"
+  }
+  ```
+  ```js
+  namespaces: {
+    "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd", // this will be an additional namespace in our feed
+    "xmlns:mi": null, // this will be removed from our feed
+    "xmlns:dc": "http://purl.org/dc/elements/2.1/", // this will override and be the updated namespace
+  }
   ```
 
 ### `feed` Array
